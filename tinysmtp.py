@@ -24,7 +24,7 @@ class Connection(object):
     def __init__(self, hostname=None, port=None, username=None, password=None,
                  ssl=False, tls=False, debug=False):
         self.hostname = hostname or env('TINYSMTP_SERVER')
-        self.port = env('TINYSMTP_PORT', default=25)
+        self.port = port or env('TINYSMTP_PORT', default=25)
         self.username = username or env('TINYSMTP_USERNAME')
         self.password = password or env('TINYSMTP_PASSWORD')
         self.ssl = ssl or env('TINYSMTP_SSL')
