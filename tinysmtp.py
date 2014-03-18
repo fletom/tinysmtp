@@ -1,4 +1,5 @@
 import smtplib
+from urlparse import urlparse
 from email.encoders import encode_base64
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
@@ -29,6 +30,12 @@ class Connection(object):
         self.ssl = ssl or env('TINYSMTP_SSL')
         self.tls = tls or env('TINYSMTP_TLS')
         self.debug = debug or env('TINYSMTP_DEBUG')
+    
+    @classmethod
+    def from_url(cls, url, *args, **kwargs):
+        url = urlparse(url)
+        assert url.scheme == 'smtp' or not url.scheme
+        return cls(url.hostname, url.port, url.username, url.password, *args, **kwargs)
 
     def connect(self):
         SMTP = smtplib.SMTP_SSL if self.ssl else smtplib.SMTP
